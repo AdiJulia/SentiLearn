@@ -1,0 +1,177 @@
+{% extends "layouts/base.html" %} {% block content %}
+<div class="page-inner">
+  <div
+    class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"
+  >
+    <div>
+      <h3 class="fw-bold mb-3">Data Training</h3>
+    </div>
+    <div class="ms-md-auto py-2 py-md-0">
+      <form action="{{ url_for('train_test.trainingtesting') }}" method="POST">
+        <input type="hidden" name="redirect_page" value="data_training.hal_data_training">
+        <button type="submit" class="btn btn-primary btn-square">
+            Mulai Proses Training
+        </button>
+    </form>
+    </div>
+  </div>
+
+  <!-- Tampilan Hasil Training -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Hasil Training</h4>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table
+              class="display table table-striped table-hover"
+            >
+              <thead>
+                <tr>
+                  {% for column in ['model_name', 'training_accuracy',
+                  'training_accuracy (%)', 'precision_score', 'recall',
+                  'f1_score', 'support' ] %}
+                  <th>{{ column }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in data_training %}
+                <tr>
+                  {% for item in row %}
+                  <td>{{ item }}</td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Tabel Classification Report -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Classification Report</h4>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="display table table-striped table-hover">
+              <thead>
+                <tr>
+                  {% for col in classification_report_columns %}
+                  <th>{{ col }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in classification_report_table %}
+                <tr>
+                  {% for item in row %}
+                  <td>{{ item }}</td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tampilan Data Sentimen -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Data Sentimen</h4>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table
+              id="basic-datatables"
+              class="display table table-striped table-hover"
+            >
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Label</th>
+                  <th>Text Stemmed</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in data_sentimen %}
+                <tr>
+                  <td>{{ row[0] }}</td>
+                  <td>{{ row[1] }}</td>
+                  <td>{{ row[2] }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="d-flex justify-content-between align-items-center pt-2 pb-4">
+      <div class="py-2">
+        <form
+          action="{{ url_for('data_training.reset_table_training') }}"
+          method="POST"
+          style="display: inline"
+        >
+          <button type="submit" class="btn btn-danger btn-square">
+            Hapus Data
+          </button>
+        </form>
+      </div>
+      <div>
+        <form
+          action="{{ url_for('data_testing.hal_data_testing') }}"
+          method="POST"
+          style="display: inline"
+        >
+          <button type="submit" class="btn btn-primary btn-square me-2">
+            Data Testing
+          </button>
+        </form>
+        <form action="{{ url_for('test_result.testresult') }}" method="POST" style="display: inline">
+          <button type="submit" class="btn btn-primary btn-square">
+            Test Result
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core JS Files -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../static/assets/js/core/jquery-3.7.1.min.js"></script>
+  <script src="../static/assets/js/core/popper.min.js"></script>
+  <script src="../static/assets/js/core/bootstrap.min.js"></script>
+
+  <!-- jQuery Scrollbar -->
+  <script src="../static/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+  <!-- Datatables -->
+  <script src="../static/assets/js/plugin/datatables/datatables.min.js"></script>
+  <!-- Kaiadmin JS -->
+  <script src="../static/assets/js/kaiadmin.min.js"></script>
+  <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+  <script src="../static/assets/js/setting-demo2.js"></script>
+  <script>
+    $(document).ready(function () {
+      $("#basic-datatables").DataTable({});
+    });
+  </script>
+  
+  {% endblock %}
+</div>

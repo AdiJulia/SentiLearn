@@ -1,0 +1,178 @@
+{% extends "layouts/base.html" %} {% block content %}
+<div class="page-inner">
+  <div
+    class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"
+  >
+    <div>
+      <h3 class="fw-bold mb-3">Test Result</h3>
+    </div>
+    <div class="ms-md-auto py-2 py-md-0">
+      <form
+        action="{{ url_for('test_result.testresult') }}"
+        method="POST"
+        class="ms-3"
+      >
+        <button type="submit" class="btn btn-success">Tampilkan Data</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Tampilan Data Training -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Data Training</h4>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="display table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>Model Name</th>
+                  <th>Training Accuracy</th>
+                  <th>Training Accuracy Percent</th>
+                  <th>Precision Score</th>
+                  <th>Recall</th>
+                  <th>F1 Score</th>
+                  <th>Support</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in data_training %}
+                <tr>
+                  {% for item in row %}
+                  <td>{{ item }}</td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tampilan Data Testing -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Data Testing</h4>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="display table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>Model Name</th>
+                  <th>Testing Accuracy</th>
+                  <th>Testing Accuracy Percent</th>
+                  <th>Precision Score</th>
+                  <th>Recall</th>
+                  <th>F1 Score</th>
+                  <th>Support</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in data_testing %}
+                <tr>
+                  {% for item in row %}
+                  <td>{{ item }}</td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tampilan Confusion Matrix -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Confusion Matrix</h4>
+        </div>
+        <div class="card-body">
+          <img src="{{ url_for('static', filename=confusion_matrix_img) }}" alt="Confusion Matrix">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tampilan Jumlah Kalimat Positif dan Negatif -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Jumlah Kalimat Positif dan Negatif</h4>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="display table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>Label</th>
+                  <th>Count</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in summary_data %}
+                <tr>
+                  <td>{{ row.Label }}</td>
+                  <td>{{ row.Count }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tampilan Word Clouds -->
+  <!-- <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Word Clouds</h4>
+        </div>
+        <div class="card-body">
+          {% if wordclouds %}
+          <div>
+            <h3>Positive Word Cloud</h3>
+            <img src="{{ url_for('static', filename=positive_wordcloud_img) }}" alt="Positive Word Cloud">
+          </div>
+          <div>
+            <h3>Negative Word Cloud</h3>
+            <img src="{{ url_for('static', filename=negative_wordcloud_img) }}" alt="Negative Word Cloud">
+          </div>
+          {% else %}
+          <p>No wordclouds available.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <!--   Core JS Files   -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../static/assets/js/core/jquery-3.7.1.min.js"></script>
+  <script src="../static/assets/js/core/popper.min.js"></script>
+  <script src="../static/assets/js/core/bootstrap.min.js"></script>
+  <script src="../static/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+  <script src="../static/assets/js/plugin/datatables/datatables.min.js"></script>
+  <script src="../static/assets/js/kaiadmin.min.js"></script>
+  <script src="../static/assets/js/setting-demo2.js"></script>
+  <script>
+    $(document).ready(function () {
+      $("#basic-datatables").DataTable({});
+    });
+  </script>
+</div>
+{% endblock %}

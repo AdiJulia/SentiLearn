@@ -1,0 +1,112 @@
+<div class="sidebar" data-background-color="dark">
+  <div class="sidebar-logo">
+    <!-- Logo Header -->
+    <div class="logo-header">
+      <a href="{{ url_for('dashboard.dashboard') }}">
+        <img
+          src="../../static/assets/logo1.png"
+          alt="Logo"
+          class="navbar-brand"
+          height="40px;"
+        />
+        <span class="poppins-medium-navbar" style="color: white;">SentiLearn</span>
+      </a>
+      <!-- <div class="nav-toggle">
+        <button class="btn btn-toggle toggle-sidebar">
+          <i class="gg-menu-right"></i>
+        </button>
+        <button class="btn btn-toggle sidenav-toggler">
+          <i class="gg-menu-left"></i>
+        </button>
+      </div> -->
+      <button class="topbar-toggler more">
+        <i class="gg-more-vertical-alt"></i>
+      </button>
+    </div>
+    <!-- End Logo Header -->
+  </div>
+  
+  <div class="sidebar-wrapper scrollbar scrollbar-inner">
+    <div class="sidebar-content">
+      <ul class="nav nav-secondary">
+        <li class="nav-item {% if request.path == url_for('dashboard.dashboard') %}active{% endif %}">
+          <a href="{{ url_for('dashboard.dashboard') }}" class="collapsed" aria-expanded="false">
+            <i class="fas fa-home"></i>
+            <p>Dashboard</p>
+          </a>
+        </li>
+
+        <li class="nav-section">
+          <span class="sidebar-mini-icon">
+            <i class="fa fa-ellipsis-h"></i>
+          </span>
+          <h4 class="text-section">Components</h4>
+        </li>
+
+        <li class="nav-item {% if request.path == url_for('import_data.import_data') %}active{% endif %}">
+          <a href="{{ url_for('import_data.import_data') }}" class="collapsed" aria-expanded="false">
+            <i class="fas fa-file-import"></i>
+            <p>Import Data</p>
+            <span class="nav-item"></span>
+          </a>
+        </li>
+        <li class="nav-item {% if request.path == url_for('preprocessing.hal_preprocessing') %}active{% endif %}">
+          <a href="{{ url_for('preprocessing.hal_preprocessing') }}" class="collapsed" aria-expanded="false">
+            <i class="fas fa-layer-group"></i>
+            <p>Preprocessing Data</p>
+            <span class="nav-item"></span>
+          </a>
+        </li>
+        <!-- <li class="nav-item {% if request.path == url_for('klasifikasi.hal_klasifikasi_data') %}active{% endif %}">
+          <a href="{{ url_for('klasifikasi.hal_klasifikasi_data') }}" class="collapsed" aria-expanded="false">
+            <i class="fas fa-newspaper"></i>
+            <p>Labeling Data</p>
+            <span class="nav-item"></span>
+          </a>
+        </li> -->
+        <li class="nav-item {% if request.path == url_for('feature_extraction.hal_feature_extraction') %}active{% endif %}">
+          <a href="{{ url_for('feature_extraction.hal_feature_extraction') }}" class="collapsed" aria-expanded="false">
+            <i class="fas fa-clone"></i>
+            <p>Feature Extraction</p>
+            <span class="nav-item"></span>
+          </a>
+        </li>
+        <li class="nav-item {% if request.path == url_for('data_training.hal_data_training') %}active{% endif %}">
+          <a href="{{ url_for('data_training.hal_data_training') }}" class="collapsed" aria-expanded="false">
+            <i class="fas fa-cube"></i>
+            <p>Data Training</p>
+            <span class="nav-item"></span>
+          </a>
+        </li>
+        <li class="nav-item {% if request.path == url_for('data_testing.hal_data_testing') %}active{% endif %}">
+          <a href="{{ url_for('data_testing.hal_data_testing') }}" class="collapsed" aria-expanded="false">
+            <i class="fas fa-cubes"></i>
+            <p>Data Testing</p>
+            <span class="nav-item"></span>
+          </a>
+        </li>
+        <li class="nav-item {% if request.path == url_for('test_result.hal_test_result') %}active{% endif %}">
+          <a href="{{ url_for('test_result.hal_test_result') }}" class="collapsed" aria-expanded="false">
+            <i class="fas fa-file"></i>
+            <p>Test Result</p>
+            <span class="nav-item"></span>
+          </a>
+        </li>
+        <!-- <li class="nav-item {% if request.path == url_for('register.register') %}active{% endif %}">
+          <a href="{{ url_for('register.register') }}" class="collapsed" aria-expanded="false">
+            <i class="fas fa-file"></i>
+            <p>Register</p>
+            <span class="nav-item"></span>
+          </a>
+        </li>
+        <li class="nav-item {% if request.path == url_for('login.login') %}active{% endif %}">
+          <a href="{{ url_for('login.login') }}" class="collapsed" aria-expanded="false">
+            <i class="fas fa-file"></i>
+            <p>Login</p>
+            <span class="nav-item"></span>
+          </a>
+        </li> -->
+      </ul>
+    </div>
+  </div>
+</div>

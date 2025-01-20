@@ -1,0 +1,93 @@
+{% extends "layouts/base.html" %} {% block content %}
+<div class="page-inner">
+  <div
+    class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"
+  >
+    <div>
+      <h3 class="fw-bold mb-3">Labeling Data</h3>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Isi Labeling Data</h4>
+          <p class="card-category"> Jumlah Data Yang Di Labeling {{ jumlah_data }}</p>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table
+              id="basic-datatables"
+              class="display table table-striped table-hover"
+            >
+              <thead>
+                <tr>
+                  {% for column in columns %}
+                  <th>{{ column }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in data %}
+                <tr>
+                  {% for item in row %}
+                  <td>{{ item }}</td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr>
+                  {% for column in columns %}
+                  <th>{{ column }}</th>
+                  {% endfor %}
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="d-flex justify-content-between align-items-center pt-2 pb-4">
+      <div class="py-2">
+        <form action="{{ url_for('klasifikasi.reset_table_klasifikasi') }}" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-danger btn-square">Hapus Data</button>
+        </form>
+      </div>
+      <form action="{{ url_for('feature_extraction.hal_feature_extraction') }}" method="POST">
+        <button type="submit" class="btn btn-primary btn-square">Feature Extraction Data</button>
+      </form>
+    </div>
+  </div>
+
+
+  <!--   Core JS Files   -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../static/assets/js/core/jquery-3.7.1.min.js"></script>
+  <script src="../static/assets/js/core/popper.min.js"></script>
+  <script src="../static/assets/js/core/bootstrap.min.js"></script>
+
+  <!-- jQuery Scrollbar -->
+  <script src="../static/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+  <!-- Datatables -->
+  <script src="../static/assets/js/plugin/datatables/datatables.min.js"></script>
+  <!-- Kaiadmin JS -->
+  <script src="../static/assets/js/kaiadmin.min.js"></script>
+  <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+  <script src="../static/assets/js/setting-demo2.js"></script>
+  <script>
+    $(document).ready(function () {
+      $("#basic-datatables").DataTable({});
+
+      var action =
+        '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+    });
+  </script>
+
+  {% endblock %}
+</div>
