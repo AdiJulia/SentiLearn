@@ -4,9 +4,56 @@
     class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"
   >
     <div>
-      <h3 class="fw-bold mb-3">Dashboard</h3>
+      <h2 class="fw-bold mb-3">Dashboard</h3>
     </div>
   </div>
+  <div class="col-md">
+    <div class="card card-stats card-round p-4">
+      <div class="row">
+        <!-- Bagian Cek Klasifikasi Kalimat Aplikasi -->
+        <div>
+            <div class="card-body">
+                <h4 class="card-title" style="font-size:22px; font-weight:bold">Cek Klasifikasi Kalimat</h4>
+                <p style="text-align:justify; font-size:16px">
+                    Fitur Cek Kalimat memungkinkan pengguna untuk memasukkan kalimat, kemudian mendapatkan hasil analisis sentimen beserta proses preprocessing yang dilakukan pada kalimat tersebut.
+                </p>
+                <div class="form-group">
+                    <label for="cek" style="font-size:16px; font-weight: bold">Masukkan kalimat</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="cek"
+                        placeholder="Enter Sentence"
+                    />
+                </div>
+                <div class="row">
+                    <div class="d-flex justify-content-between align-items-center pt-2 pb-4">
+                        <div class="ms-auto">
+                            <button type="button" class="btn btn-primary btn-square" onclick="prosesKlasifikasi()">Proses Kalimat</button>
+                        </div>
+                    </div>
+                </div>            
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md">
+    <div class="card card-stats card-round p-4">
+      <div class="row">
+        <div class="card-body">
+          <h4 class="card-title" style="font-size:18px; font-weight:bold">Hasil Cek Klasifikasi Kalimat</h4>
+          <div id="result" style="font-size:16px; margin-top:20px;">
+            <p style="text-align: justify"><p style="font-weight:bold">Full Text :</p> <span id="full_text"></span></p>
+            <p style="text-align: justify"><p style="font-weight:bold">Text Preprocessing :</p> <span id="preprocessed_text"></span></p>
+            <p style="text-align: justify"><p style="font-weight:bold">Hasil Sentimen :</p> <span id="sentiment"></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div>
     <h5 class="fw mb-3">Hasil klasifikasi sentimen terhadap pembangunan Ibu Kota Nusantara menggunakan metode Logistic Regression</h4>
   </div>
@@ -93,7 +140,6 @@
         </div>
       </div>
     </div>
-    
   </div>
 
   <div class="col-md">
@@ -114,10 +160,10 @@
           <div class="card-body">
             <h4 class="card-title" style="font-size:22px; font-weight:bold">Informasi Aplikasi</h4>
             <p style="text-align:justify; font-size:18px">
-              SentiLearn merupakan sebuah aplikasi analisis sentimen yang dirancang untuk membantu memahami persepsi masyarakat mengenai pembangunan Ibu Kota Nusantara berbasis Website. Menggunakan metode Logistic Regression, aplikasi ini memungkinkan pengklasifikasian sentimen positif, negatif, dan netral pada berbagai data yang terkumpul.
+              SentiLearn merupakan sebuah aplikasi analisis sentimen yang dirancang untuk membantu memahami persepsi masyarakat mengenai berbagai topik berbasis Website. Menggunakan metode Logistic Regression, aplikasi ini memungkinkan pengklasifikasian sentimen positif, negatif, dan netral pada berbagai data yang terkumpul.
             </p>
             <p style="text-align:justify; font-size:18px">
-              Melalui SentiLearn, kami berharap dapat memberikan pandangan yang lebih mendalam tentang opini publik terkait proyek pembangunan Ibu Kota Nusantara. Hasil analisis yang ditampilkan dapat digunakan sebagai bahan evaluasi dalam pengambilan keputusan untuk keperluan berbagai pihak yang membutuhkan.
+              Melalui SentiLearn, kami berharap dapat memberikan pandangan yang lebih mendalam tentang opini publik terkait berbagai isu. Hasil analisis yang ditampilkan dapat digunakan sebagai bahan evaluasi dalam pengambilan keputusan untuk keperluan berbagai pihak yang membutuhkan.
             </p>
           </div>
         </div>
@@ -149,6 +195,38 @@
         '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
     });
   </script>
+
+  <script>
+      function prosesKlasifikasi() {
+          // Ambil input teks
+          var text = document.getElementById("cek").value;
+
+          if (text.trim() === "") {
+              alert("Teks tidak boleh kosong.");
+              return;
+          }
+
+          // Kirimkan data teks menggunakan AJAX
+          fetch('/klasifikasi_realtime', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ text: text })
+          })
+          .then(response => response.json())
+          .then(data => {
+              // Menampilkan hasil pada elemen HTML
+              document.getElementById("full_text").textContent = data.full_text;
+              document.getElementById("preprocessed_text").textContent = data.preprocessed_text;
+              document.getElementById("sentiment").textContent = data.sentiment;
+          })
+          .catch(error => {
+              console.error('Error:', error);
+          });
+      }
+  </script>
+  
 
   {% endblock %}
 </div>

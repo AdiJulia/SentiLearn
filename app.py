@@ -13,7 +13,7 @@ application = app
 load_dotenv()
 
 # Konfigurasi MySQL 
-app.config['MYSQL_HOST'] = 'localhost'  # Nama service pada docker-compose
+app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'root123'
 app.config['MYSQL_DB'] = 'sentilearn'
@@ -23,7 +23,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 @app.route('/')
 def index():
-    return render_template('login.html')
+    return render_template('auth/login.html')
     # return render_template('index.html')
 
 # # Rute untuk role `user`

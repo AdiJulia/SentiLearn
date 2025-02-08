@@ -3,6 +3,7 @@ from flask import Blueprint, current_app, render_template, request, url_for, red
 import pandas as pd
 import mysql.connector
 import matplotlib
+import pickle
 from db_config import connect_db
 from sklearn.model_selection import train_test_split
 matplotlib.use('Agg')
@@ -50,7 +51,7 @@ def feature_extraction():
         if not rows:
             return "No data available for TF-IDF extraction."
 
-        # Pisahkan data ke dalam list
+        # Memisahkan data ke dalam list
         username_list, label_list, full_text_list, text_stemmed_list = zip(*rows)
 
         # Inisialisasi TF-IDF Vectorizer
@@ -60,7 +61,7 @@ def feature_extraction():
         tfidf_matrix = vectorizer.fit_transform(text_stemmed_list)
         tfidf_features = vectorizer.get_feature_names_out()
 
-        # Simpan hasil TF-IDF ke dalam tabel data_extraction
+        # Menyimpan hasil TF-IDF ke dalam tabel data_extraction
         insert_query = """
         INSERT INTO data_extraction (username, label, full_text, text_stemmed, text_extraction)
         VALUES (%s, %s, %s, %s, %s)
@@ -76,8 +77,13 @@ def feature_extraction():
                 text_extraction
             ))
 
-        # Commit perubahan ke database
         db.commit()
+        
+        # Simpan vectorizer ke dalam file pickle
+        vectorizer_path = 'static/models/tfidf_vectorizer.pkl'
+        with open(vectorizer_path, 'wb') as f:
+            pickle.dump(vectorizer, f)
+            
         return "TF-IDF successfully extracted and stored in data_extraction."
 
     except mysql.connector.Error as err:
@@ -101,7 +107,6 @@ def split_data_proses():
         cursor.execute("SELECT username, label, full_text, text_stemmed, text_extraction FROM data_extraction")
         rows = cursor.fetchall()
 
-        # Jika tidak ada data, kembalikan pesan
         if not rows:
             return "No data available for splitting."
 
@@ -132,6 +137,8 @@ def split_data_proses():
 
         db.commit()
         return "Data successfully split into training and testing sets."
+    
+
 
     except mysql.connector.Error as err:
         return f"Error: {err}"
@@ -144,8 +151,7 @@ def reset_table_extraction():
     db = connect_db(current_app)
     cursor = db.cursor()
     
-    # Hapus semua data dari tabel
-    cursor.execute("TRUNCATE TABLE data_extraction")  # Ini akan menghapus semua data dan mengatur ulang AUTO_INCREMENT
+    cursor.execute("TRUNCATE TABLE data_extraction") 
 
     db.commit()
     cursor.close()

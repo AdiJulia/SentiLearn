@@ -9,6 +9,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, confusion_matrix
 from db_config import connect_db
 import os
+import pickle
+
 
 traintest_bp = Blueprint('train_test', __name__)
 
@@ -25,7 +27,7 @@ def trainingtesting():
     cursor = db.cursor()
 
     try:
-        # Ambil parameter redirect_page dari form
+        # Mengambil parameter redirect_page dari form agar kembali ke form semulaa
         redirect_page = request.form.get('redirect_page')
 
         # Cek apakah data sudah ada di tabel
@@ -79,6 +81,12 @@ def trainingtesting():
         logreg = LogisticRegression(penalty='l2', solver='liblinear', random_state=0, class_weight='balanced')
         # solver='liblinear' untuk pengoptimalan yang digunakan oleh Logistic Regression. random_state=0: Mengatur nilai acak untuk hasil yang konsisten.
         
+        # Cek apakah model sudah ada
+        model_path = 'static/models/sentiment_model.pkl'
+        vectorizer_path = 'static/models/tfidf_vectorizer.pkl'
+
+        if os.path.exists(model_path) and os.path.exists(vectorizer_path):
+            return jsonify({"message": "Model sudah ada, tidak perlu training ulang."}), 200
         
         logreg.fit(X_train, y_train)
 
@@ -154,10 +162,12 @@ def trainingtesting():
         plt.xlabel('Predicted Labels')
         plt.title('Confusion Matrix')
 
-        # Simpan gambar confusion matrix ke folder static/images
         cm_image_path = os.path.join(current_app.static_folder, 'images', 'confusion_matrix.png')
         plt.savefig(cm_image_path)
-        plt.close()  # Tutup plot untuk menghindari tampilan yang tidak diinginkan
+        plt.close()
+        
+        with open('static/models/sentiment_model.pkl', 'wb') as f:
+            pickle.dump(logreg, f)
 
         return redirect(url_for(redirect_page))
 

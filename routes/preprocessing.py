@@ -48,7 +48,7 @@ def preprocessing():
     cursor = db.cursor()
 
     try:
-        # Ambil data dari tabel data_sentiment
+        # Mengambil data dari tabel data_sentiment
         cursor.execute("SELECT username, full_text, label FROM data_sentiment")
         rows = cursor.fetchall()
 
